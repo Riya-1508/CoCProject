@@ -33,14 +33,16 @@ router.post('/createuser', [
     }
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hash(req.body.password, salt);
-
+    const secPass1 = await bcrypt.hash(req.body.confirmpassword,salt)
     // Create a new user
     user = await User.create({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      password: secPass,
+      phnNumber:req.body.phnNumber,
       email: req.body.email,
-      phnNumber:req.body.phnNumber
+      password: secPass,
+      confirmpassword:secPass1
+     
     });
     const data = {
       user: {
