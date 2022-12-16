@@ -14,26 +14,28 @@ function SignUp() {
     const [lastname,setlastName] = useState("")
     const [phnNumber,setphnNumber] = useState("")
     const[error,setError] = useState(false)
-    const[loading,setLoading] = useState(false)
-    const[message,setMessage] = useState(null)
+    // const[loading,setLoading] = useState(false)
+    const[message,setMessage] = useState("")
     const submitHandler = async (e) => {
         e.preventDefault();
-        if(password !== confirmpassword){
+        if(password !== confirmpassword){ 
                 setMessage("Passwords Do not match");
         }
         else {
-            setMessage(null)
+            // setMessage(null)
             try {
                 const config = {
                     headers: {
                         "Content-type": "application/json"
                     },
                 }
-                setLoading(true)
+                //setLoading(true)
                 const { data } = await axios.post("localhost:5000/api/auth/createUser",
-                {firstname,lastname,phnNumber,email,password,confirmpassword},
-                config) 
-               setLoading(false)
+                {firstname,lastname,phnNumber,email,password,confirmpassword,},
+                config
+                ) 
+            //    setLoading(false)
+            console.log(data)
                localStorage.setItem('userInfo',JSON.stringify(data))
                
             }
@@ -58,10 +60,9 @@ function SignUp() {
                 <div className="flex justify-end py-1 pr-40">
                     <div className="bg-purple-pink w-96 h-[700px] rounded-3xl flex flex-col justify-center items-center">
                         <h1 className="mb-1 text-2xl text-white font-serif">Sign Up</h1>
-                        {message && <ErrorMessage variant = "danger">{message}</ErrorMessage>}
-                        {error && <ErrorMessage variant = "danger">{error}</ErrorMessage>}
                         
-                        <form onSubmit= {submitHandler}>
+                        {/* {loading && <Loading/>} */}
+                        <form >
                             <div className="my-0.5">
                                 <label htmlFor="name" className="text-xl text-purple-violent font-bold">First Name: </label>
                                 <div><input type="text" name="name" className="my-2 shadow appearance border rounded-2xl w-64 py-2 px-3 text-gray-700 leading-tight focus:outline-indigo-100 focus:shadow-outline" onChange = {(e) => setFirstName(e.target.value)} value = {firstname} ></input></div>
@@ -86,7 +87,10 @@ function SignUp() {
                                 <label htmlFor="password" className="text-xl text-purple-violent font-bold"> Confirm Password: </label>
                                 <div><input type="password" name="password" className="my-2 shadow appearance-none border rounded-2xl w-64 py-2 px-3 text-gray-700 leading-tight focus:outline-indigo-100 focus:shadow-outline" onChange = {(e) => setConfirmPassword(e.target.value)} value = {confirmpassword}></input></div>
                             </div>
-                            <button type="submit" className="inline-block px-6 py-1.5 bg-purple-100 text-pink-violent font-medium text-lg leading-tight uppercase rounded-full shadow-md hover:bg-white hover:shadow-lg focus:bg-pink-violent focus:text-white focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-violent active:text-white active:shadow-lg transition duration-150 ease-in-out">Submit</button>
+                            {error && <ErrorMessage variant = "danger">{error}</ErrorMessage>}
+                        
+                        {message && <ErrorMessage variant = "danger">{message}</ErrorMessage>}
+                            <button type="submit" className="inline-block px-6 py-1.5 bg-purple-100 text-pink-violent font-medium text-lg leading-tight uppercase rounded-full shadow-md hover:bg-white hover:shadow-lg focus:bg-pink-violent focus:text-white focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-violent active:text-white active:shadow-lg transition duration-150 ease-in-out" onClick= {submitHandler}>Submit</button>
                         </form>
                         {/* <div className="my-10 text-white"> */}
                             <a href="/" className="text-white text-md mt-4 hover:underline">Already have account?</a>

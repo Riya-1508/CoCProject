@@ -10,11 +10,12 @@ const JWT_SECRET = 'Harryisagoodb$oy';
 
 // ROUTE 1: Create a User using: POST "/api/auth/createuser". No login required
 router.post('/createuser', [
-  // body('firstname', 'Enter a valid  first name').isLength({ min: 3 }),
-  // body('secondname', 'Enter a valid second name').isLength({ min: 3 }),
+  body('firstname', 'Enter a valid  first name').isLength({ min: 3 }),
+  body('lastname', 'Enter a valid second name').isLength({ min: 3 }),
+  body('phnNumber', 'Enter a valid phone number').isLength({ max: 10 }),
   body('email', 'Enter a valid email').isEmail(),
   body('password', 'Password must be atleast 5 characters').isLength({ min: 5 }),
-  body('phnNumber', 'Enter a valid phone number').isLength({ max: 10 }),
+  body('confirmpassword','Password must be atleast 5 characters').isLength({ min:5})
 ], async (req, res) => {
   // If there are errors, return Bad request and the errors
   const errors = validationResult(req);
