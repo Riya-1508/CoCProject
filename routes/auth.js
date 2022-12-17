@@ -9,10 +9,11 @@ var fetchuser = require('../middleware/fetchuser');
 const JWT_SECRET = 'Harryisagoodb$oy';
 
 // ROUTE 1: Create a User using: POST "/api/auth/createuser". No login required
-router.post('/createuser', [
-  body('firstname', 'Enter a valid  first name').isLength({ min: 3 }),
-  body('lastname', 'Enter a valid second name').isLength({ min: 3 }),
-  body('phnNumber', 'Enter a valid phone number').isLength({ max: 10 }),
+let success = false
+router.post('/createUser', [
+  // body('firstname', 'Enter a valid  first name').isLength({ min: 3 }),
+  // body('lastname', 'Enter a valid second name').isLength({ min: 3 }),
+  // body('phnNumber', 'Enter a valid phone number').isLength({ max: 10 }),
   body('email', 'Enter a valid email').isEmail(),
   body('password', 'Password must be atleast 5 characters').isLength({ min: 5 }),
   body('confirmpassword','Password must be atleast 5 characters').isLength({ min:5})
@@ -34,7 +35,7 @@ router.post('/createuser', [
     }
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hash(req.body.password, salt);
-    const secPass1 = await bcrypt.hash(req.body.confirmpassword,salt)
+    //const secPass1 = await bcrypt.hash(req.body.confirmpassword,salt)
     // Create a new user
     user = await User.create({
       firstname: req.body.firstname,
@@ -42,7 +43,7 @@ router.post('/createuser', [
       phnNumber:req.body.phnNumber,
       email: req.body.email,
       password: secPass,
-      confirmpassword:secPass1
+      confirmpassword:req.body.confirmpassword
      
     });
     const data = {
@@ -53,8 +54,9 @@ router.post('/createuser', [
     const authtoken = jwt.sign(data, JWT_SECRET);
 
 
-    res.json({user, authtoken})
-     
+    //res.json(user)
+     success = true
+    res.json({success,authtoken})
 
   } catch (error) {
     console.error(error.message);
